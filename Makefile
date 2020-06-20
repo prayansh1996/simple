@@ -10,4 +10,4 @@ compile_protos:
 
 build_local: compile_protos
 	docker build -t simple .
-	docker run -p 11500:11500 simple 
+	docker run --rm -p 11500:11500 simple
