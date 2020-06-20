@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"strings"
 
+	"github.com/prayansh1996/simple/internal/service"
+	"github.com/prayansh1996/simple/proto/simple"
 	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 func main() {
@@ -31,5 +35,21 @@ func setupConfig() {
 
 func setupGrpcServer() {
 	port := viper.GetString("grpc.port")
-	fmt.Println(port)
+	server := grpc.NewServer()
+
+	listener, err := net.Listen("tcp", ":"+port)
+	if err != nil {
+		fmt.Println("Failed to initialize listener: " + err.Error())
+		return
+	}
+
+	simple.RegisterSimpleServiceServer(server, &service.SimpleService{})
+
+	fmt.Println("Starting server")
+
+	err = server.Serve(listener)
+	if err != nil {
+		fmt.Println("Failed to Serve: " + err.Error())
+		return
+	}
 }
