@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service SimpleService {
+    rpc SimpleRPC (SimpleRequest) returns (SimpleResponse);
+}
+
+message SimpleRequest {
+    string simple_string = 1;
+}
+
+message SimpleResponse {
+    string simple_string = 1;
+}
